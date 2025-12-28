@@ -1,0 +1,12 @@
+{
+  "suggest.noselect": true,
+  "suggest.enablePreselect": false,
+  "suggest.autoTrigger": "always",
+
+  "coc.preferences.formatOnSave": false,
+
+  "http.proxy": "http://127.0.0.1:7890",
+
+  "languageserver": {
+  }
+}
