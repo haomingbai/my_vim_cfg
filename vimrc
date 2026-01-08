@@ -109,7 +109,28 @@ nnoremap <silent> <Leader>h :call CocActionAsync('doHover')<CR>
 nnoremap <silent> <Leader>s :call CocActionAsync('showSignatureHelp')<CR>
 
 " 保留你原来的 <C-I>：格式化
-nnoremap <silent> <C-I> :call CocAction('format')<CR>
+function! RepoCocFormat() abort
+  if !exists('*CocAction')
+    echohl WarningMsg | echom 'Coc: 未加载，无法格式化' | echohl None
+    return
+  endif
+
+  try
+    if CocAction('hasProvider', 'format')
+      call CocAction('format')
+    else
+      echohl WarningMsg | echom 'Coc: 当前文件没有可用的格式化器' | echohl None
+    endif
+  catch
+    let l:ex = v:exception
+    if l:ex =~# 'Format provider not found'
+      echohl WarningMsg | echom 'Coc: 当前文件没有可用的格式化器' | echohl None
+    else
+      echohl WarningMsg | echom 'Coc: 格式化失败（已忽略）：' . substitute(l:ex, '\n', ' ', 'g') | echohl None
+    endif
+  endtry
+endfunction
+nnoremap <silent> <C-I> :call RepoCocFormat()<CR>
 
 " Insert 模式补全交互（coc.nvim 官方推荐写法，兼容 Vim 的 PUM/浮动补全）
 function! s:CheckBackspace() abort
