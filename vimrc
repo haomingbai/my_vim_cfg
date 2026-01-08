@@ -138,11 +138,9 @@ function! s:CheckBackspace() abort
   return !l:col || getline('.')[l:col - 1]  =~# '\\s'
 endfunction
 
-" Tab/Shift-Tab：在补全菜单中切换；否则按需触发补全/插入 Tab
+" Tab/Shift-Tab：在补全菜单中切换；否则插入 Tab（不触发补全弹窗）
 inoremap <silent><expr> <Tab>
-  \ coc#pum#visible() ? coc#pum#next(1) :
-  \ <SID>CheckBackspace() ? "\<Tab>" :
-  \ coc#refresh()
+  \ coc#pum#visible() ? coc#pum#next(1) : "\<Tab>"
 
 inoremap <silent><expr> <S-Tab>
   \ coc#pum#visible() ? coc#pum#prev(1) :
